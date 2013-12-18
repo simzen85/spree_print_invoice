@@ -1,3 +1,6 @@
-<!-- insert_top '.page-actions .inline-menu' sequence '1' -->
+<!-- insert_top '.page-actions .inline-menu'
+     sequence '100'
+     original '368cb38d5c22e06acec6e940a67eb0a627f49006'
+-->
 <%= render :partial => "spree/admin/orders/print_buttons" %>
 
