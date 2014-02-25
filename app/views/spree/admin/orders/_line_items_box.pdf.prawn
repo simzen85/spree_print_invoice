@@ -1,8 +1,8 @@
 if @hide_prices
-  @column_widths = { 0 => 100, 1 => 165, 2 => 75, 3 => 75 } 
+  @column_widths = { 0 => 100, 1 => 165, 2 => 75, 3 => 75 }
   @align = { 0 => :left, 1 => :left, 2 => :right, 3 => :right }
 else
-  @column_widths = { 0 => 75, 1 => 205, 2 => 75, 3 => 50, 4 => 75, 5 => 60 } 
+  @column_widths = { 0 => 75, 1 => 205, 2 => 75, 3 => 50, 4 => 75, 5 => 60 }
   @align = { 0 => :left, 1 => :left, 2 => :left, 3 => :right, 4 => :right, 5 => :right}
 end
 
@@ -11,11 +11,11 @@ bounding_box [0,cursor], :width => 540, :height => 430 do
   move_down 2
   header =  [Prawn::Table::Cell.new( :text => Spree.t(:sku), :font_style => :bold),
                 Prawn::Table::Cell.new( :text => Spree.t(:item_description), :font_style => :bold ) ]
-  header <<  Prawn::Table::Cell.new( :text => Spree.t(:options), :font_style => :bold ) 
+  header <<  Prawn::Table::Cell.new( :text => Spree.t(:options), :font_style => :bold )
   header <<  Prawn::Table::Cell.new( :text => Spree.t(:price), :font_style => :bold ) unless @hide_prices
   header <<  Prawn::Table::Cell.new( :text => Spree.t(:qty), :font_style => :bold, :align => 1 )
   header <<  Prawn::Table::Cell.new( :text => Spree.t(:total), :font_style => :bold ) unless @hide_prices
-    
+
   table [header],
     :position           => :center,
     :border_width => 1,
@@ -33,9 +33,9 @@ bounding_box [0,cursor], :width => 540, :height => 430 do
     @order.line_items.each do |item|
       row = [ item.variant.product.sku, item.variant.product.name]
       row << item.variant.option_values.map {|ov| "#{ov.option_type.presentation}: #{ov.presentation}"}.concat(item.respond_to?('ad_hoc_option_values') ? item.ad_hoc_option_values.map {|pov| "#{pov.option_value.option_type.presentation}: #{pov.option_value.presentation}"} : []).join(', ')
-      row << number_to_currency(item.price) unless @hide_prices
+      row << item.single_display_amount.to_s unless @hide_prices
       row << item.quantity
-      row << number_to_currency(item.price * item.quantity) unless @hide_prices
+      row << item.display_total.to_s unless @hide_prices
       content << row
     end
 
@@ -52,12 +52,8 @@ bounding_box [0,cursor], :width => 540, :height => 430 do
 
   font "Helvetica", :size => 9
 
-  bounding_box [20,cursor  ], :width => 400 do
-    render :partial => "bye" unless @hide_prices
-  end
-
   render :partial => "totals" unless @hide_prices
-  
+
   move_down 2
 
   stroke do
