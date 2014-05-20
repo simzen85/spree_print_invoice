@@ -1,0 +1,11 @@
+<!-- insert_after "erb[loud]:contains('csrf_meta_tags')"
+sequence 10 -->
+<% if @order and @order.complete? %>
+  <% content_for :page_actions do %>
+    <% buttons = Spree::PrintInvoice::Config[:print_buttons]
+       buttons = buttons.split(",").collect{|b| b.strip } %>
+    <% buttons.each do |button| %>
+      <li><%= link_to(Spree.t(button.to_s + "_print"), spree.admin_order_path(@order, :pdf , :template => button), :class => "button icon-print") %></li>
+    <% end %>
+  <% end %>
+<% end %>
