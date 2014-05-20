@@ -1,5 +1,5 @@
-Deface::Override.new(:virtual_path => "spree/admin/shared/_content_header",
+Deface::Override.new(:virtual_path => "spree/admin/orders/edit",
                      :name => "print_buttons",
-                     :insert_top => "[data-hook='toolbar']>ul",
+                     :insert_after => "erb[loud]:contains('csrf_meta_tags')",
                      :partial => "spree/admin/orders/print_buttons",
                      :disabled => false)
